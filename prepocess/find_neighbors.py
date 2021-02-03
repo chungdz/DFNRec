@@ -20,7 +20,7 @@ for n, info in tqdm(news_dict.items(), total=len(news_dict), desc='news neighbor
 
     neighbor_news_dict = {}
     for u in info['clicked']:
-        cur_nlist = user_dict[u]['pos']
+        cur_nlist = user_dict[u]['clicked']
         for neighbor_n in cur_nlist:
             if neighbor_n not in neighbor_news_dict:
                 neighbor_news_dict[neighbor_n] = 1

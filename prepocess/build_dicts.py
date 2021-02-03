@@ -31,8 +31,7 @@ max_title_len = args.title_len
 
 print("Loading news info")
 f_train_news = os.path.join(data_path, "train/news.tsv")
-f_dev_news = os.path.join(data_path, "valid/news.tsv")
-f_test_news = os.path.join(data_path, "test/news.tsv")
+f_dev_news = os.path.join(data_path, "dev/news.tsv")
 
 print("Loading training news")
 all_news = pd.read_csv(f_train_news, sep="\t", encoding="utf-8",
@@ -96,7 +95,7 @@ dev_beh = pd.read_csv(f_dev_beh, sep="\t", encoding="utf-8", names=["id", "uid",
 target_ids = set(pd.unique(target_beh['uid']))
 dev_ids = set(pd.unique(dev_beh['uid']))
 live_ids = target_ids | dev_ids
-print('live ids', live_ids)
+print('live ids', len(live_ids))
 
 user_dict = {}
 user_idx = 0
@@ -105,7 +104,7 @@ for uid, imp in tqdm(his_beh[['uid', 'imp']].values, total=his_beh.shape[0], des
         continue
 
     if uid not in user_dict:
-        user_dict[uid] = {"pos": [], "neg": [], "idx": user_idx}
+        user_dict[uid] = {"pos": [], "neg": [], "idx": user_idx, 'clicked': []}
         user_idx += 1
     
     imp_list = str(imp).split(' ')
@@ -117,6 +116,7 @@ for uid, imp in tqdm(his_beh[['uid', 'imp']].values, total=his_beh.shape[0], des
             user_dict[uid]["neg"].append(curn)
         elif label == 1:
             user_dict[uid]["pos"].append(curn)
+            user_dict[uid]['clicked'].append(arr[0])
         else:
             raise Exception('label error!')
 
@@ -124,7 +124,7 @@ print('user num', len(user_dict))
 # build graph dict
 for uid, uinfo in tqdm(user_dict.items(), desc='build graph', total=his_beh.shape[0]):
     
-    his_list = uinfo["pos"]
+    his_list = uinfo["clicked"]
     for h in his_list:
         news_dict[h]['clicked'].add(uid)
 
