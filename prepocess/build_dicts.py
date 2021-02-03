@@ -106,7 +106,7 @@ for uid, imp in tqdm(his_beh[['uid', 'imp']].values, total=his_beh.shape[0], des
         continue
 
     if uid not in user_dict:
-        user_dict[uid] = {"pos": [], "neg": [], "idx": user_idx, 'clicked': []}
+        user_dict[uid] = {"pos": [], "neg": [], "idx": user_idx, 'clicked': [], 'dislike': []}
         user_idx += 1
     
     imp_list = str(imp).split(' ')
@@ -116,6 +116,7 @@ for uid, imp in tqdm(his_beh[['uid', 'imp']].values, total=his_beh.shape[0], des
         label = int(arr[1])
         if label == 0:
             user_dict[uid]["neg"].append(curn)
+            user_dict[uid]["dislike"].append(arr[0])
         elif label == 1:
             user_dict[uid]["pos"].append(curn)
             user_dict[uid]['clicked'].append(arr[0])

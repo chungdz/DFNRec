@@ -1,6 +1,6 @@
 python -m prepocess.cut_train
 python -m prepocess.build_dicts
-python -m data_prepocess.find_neighbors
+python -m prepocess.find_neighbors
 python -m prepocess.build_train --processes=10
 python -m prepocess.resplit --filenum 10 --processes 2
 python -m prepocess.build_valid --processes=10 --fsamples=dev/behaviors.tsv
