@@ -19,5 +19,5 @@ class ModelConfig():
         self.hidden_size = 100
         self.head_num = 4
         self.dropout = 0.2
-        
+        self.input_len = 2 + (1 + self.pos_hist_length + self.neg_hist_length + self.unclicked_hist_length) * self.max_title_len
         return None
