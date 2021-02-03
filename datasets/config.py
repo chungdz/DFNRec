@@ -5,8 +5,8 @@ class ModelConfig():
     def __init__(self):
 
         word_dict = json.load(open('data/word.json', 'r', encoding='utf-8'))
-        user_dict = pickle.load(open('data/user.pkl', 'rb'))
-        news_dict = pickle.load(open('data/news.pkl', 'rb'))
+        user_dict = pickle.load(open('data/user_n.pkl', 'rb'))
+        news_dict = pickle.load(open('data/news_n.pkl', 'rb'))
         
         self.word_num = len(word_dict)
         self.user_num = len(user_dict)
