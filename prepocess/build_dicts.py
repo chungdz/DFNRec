@@ -72,7 +72,7 @@ for n, title, topic in all_news[['newsid', "title", "subcate"]].values:
 
 ## paddning news for history
 news_dict['<his>']= {}
-news_dict['<his>']['idx'] = 1
+news_dict['<his>']['idx'] = 0
 news_dict['<his>']['title'] = list(np.zeros(max_title_len))
 news_dict['<his>']['clicked'] = set()
 news_dict['<his>']['neighbor'] = []

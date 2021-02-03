@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import tqdm
 
 def build_word_embeddings(vocab, pretrained_embedding, weights_output_file):
     # Load 预训练的embedding
@@ -20,7 +21,7 @@ def build_word_embeddings(vocab, pretrained_embedding, weights_output_file):
     weights_matrix = np.zeros((len(vocab), embed_size))
     words_found = 0
 
-    for k, v in vocab.items():
+    for k, v in tqdm(vocab.items(), total=len(vocab), desc='word embeddings'):
         try:
             weights_matrix[v] = emb_dict[k]
             words_found += 1
@@ -34,7 +35,7 @@ def build_news_embeddings(news_dict, output_file):
     title_len = len(news_dict['<his>']['title'])
     title_matrix = np.zeros((len(news_dict), title_len))
 
-    for k, v in news_dict.items():
+    for k, v in tqdm(news_dict.items(), total=len(news_dict), desc='news embeddings'):
         title_matrix[v['idx']] = np.array(v['title'])
     
     print('news embedding', title_matrix.shape)
