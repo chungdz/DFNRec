@@ -122,7 +122,7 @@ for uid, imp in tqdm(his_beh[['uid', 'imp']].values, total=his_beh.shape[0], des
 
 print('user num', len(user_dict))
 # build graph dict
-for uid, uinfo in tqdm(user_dict.items(), desc='build graph', total=his_beh.shape[0]):
+for uid, uinfo in tqdm(user_dict.items(), desc='build graph', total=len(user_dict)):
     
     his_list = uinfo["clicked"]
     for h in his_list:
