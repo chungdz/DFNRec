@@ -7,7 +7,7 @@ def build_word_embeddings(vocab, pretrained_embedding, weights_output_file):
     emb_dict = dict()
     error_line = 0
     embed_size = 0
-    for line in lines:
+    for line in tqdm(lines, total=len(lines), desc='load word glove'):
         row = line.strip().split()
         try:
             embedding = [float(w) for w in row[1:]]

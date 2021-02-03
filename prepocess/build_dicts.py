@@ -43,13 +43,14 @@ dev_news = pd.read_csv(f_dev_news, sep="\t", encoding="utf-8",
                         names=["newsid", "cate", "subcate", "title", "abs", "url", "title_ents", "abs_ents"],
                         quoting=3)
 all_news = pd.concat([all_news, dev_news], ignore_index=True)
-
+all_news = all_news.drop_duplicates("newsid")
 
 news_dict = {}
 word_dict = {'<pad>': 0}
 word_idx = 1
 news_idx = 1
 for n, title, topic in all_news[['newsid', "title", "subcate"]].values:
+    assert(n not in news_dict)
     news_dict[n] = {}
     news_dict[n]['idx'] = news_idx
     news_dict[n]['clicked'] = set()
@@ -79,6 +80,7 @@ news_dict['<his>']['neighbor'] = []
 
 print('all word', len(word_dict))
 print('all news', len(news_dict))
+assert(len(news_dict) == news_idx)
 
 print("Loading behaviors info")
 f_his_beh = os.path.join(data_path, "train/his_behaviors.tsv")
