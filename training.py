@@ -159,7 +159,7 @@ def validate(cfg, epoch, model, device, rank, valid_data_loader, fast_dev=False,
             data = data.to(device)
 
             # 1. Forward
-            pred = model(data[:, 2:], test_mode=True)
+            pred = model(data[:, 2:])
             if pred.dim() > 1:
                 pred = pred.squeeze()
             try:

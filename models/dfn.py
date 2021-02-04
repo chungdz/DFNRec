@@ -11,8 +11,8 @@ class DFN(nn.Module):
         self.cfg = cfg
         self.user_emb = nn.Embedding(cfg.user_num, cfg.hidden_size)
         self.news_emb = nn.Embedding(cfg.news_num, cfg.hidden_size)
-        self.user_wide = nn.Embedding(cfg.user_num, 1)
-        self.news_wide = nn.Embedding(cfg.news_num, 1)
+        self.user_wide = nn.Embedding(cfg.user_num, cfg.hidden_size)
+        self.news_wide = nn.Embedding(cfg.news_num, cfg.hidden_size)
         self.word_emb = nn.Embedding(cfg.word_num, cfg.hidden_size)
 
         self.click_linear = nn.Linear(self.cfg.max_title_len * self.cfg.hidden_size * 2, cfg.hidden_size, bias=False)
@@ -38,7 +38,7 @@ class DFN(nn.Module):
             nn.ReLU(),
             nn.Linear(32, 16)
         )
-        self.fc = nn.Linear(self.cfg.hidden_size + 16 + 2, 1)
+        self.fc = nn.Linear(self.cfg.hidden_size + 16 + 2 * cfg.hidden_size, 1)
 
     def forward(self, inputs):
         uid = inputs[:, 0]
