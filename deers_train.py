@@ -23,7 +23,7 @@ import math
 from datasets.recodata import RecoData
 from datasets.config import ModelConfig
 from gather import gather as gather_all
-from models.dfn import DFN
+from models.deers import DEERS
 from utils.log_util import convert_omegaconf_to_dict
 from utils.train_util import set_seed
 from utils.train_util import save_checkpoint_by_epoch
@@ -74,7 +74,7 @@ def run(cfg, rank, device, finished, train_dataset_path, valid_dataset_file, new
         finished.value += 1
 
         if (cfg.gpus < 2) or (cfg.gpus > 1 and rank == 0):
-            save_checkpoint_by_epoch(model.state_dict(), epoch, cfg.checkpoint_path)
+            save_checkpoint_by_epoch(model.state_dict(), epoch, cfg.checkpoint_path, name='deers')
 
             while finished.value < cfg.gpus:
                 time.sleep(1)
@@ -250,7 +250,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=128, help='input batch size')
     parser.add_argument('--gpus', type=int, default=2, help='gpu_num')
     parser.add_argument('--epoch', type=int, default=10, help='the number of epochs to train for')
-    parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')  # [0.001, 0.0005, 0.0001]
+    parser.add_argument('--lr', type=float, default=0.0005, help='learning rate')  # [0.001, 0.0005, 0.0001]
     parser.add_argument('--weight_decay', type=float, default=1e-6)
     parser.add_argument('--port', type=int, default=9337)
     opt = parser.parse_args()

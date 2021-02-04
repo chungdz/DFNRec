@@ -43,7 +43,7 @@ def save_checkpoint(state, is_best, checkpoint):
         shutil.copyfile(filepath, os.path.join(checkpoint, 'best.pth.tar'))
 
 
-def save_checkpoint_by_epoch(state, epoch, checkpoint):
+def save_checkpoint_by_epoch(state, epoch, checkpoint, name='model'):
     """Saves model and training parameters at checkpoint + 'last.pth.tar'. If is_best==True, also saves
     checkpoint + 'best.pth.tar'
 
@@ -52,7 +52,7 @@ def save_checkpoint_by_epoch(state, epoch, checkpoint):
         epoch: (int) epoch no
         checkpoint: (string) folder where parameters are to be saved
     """
-    filepath = os.path.join(checkpoint, 'model.ep{0}'.format(epoch))
+    filepath = os.path.join(checkpoint, '{}.ep{0}'.format(name, epoch))
     if not os.path.exists(checkpoint):
         print("Checkpoint Directory does not exist! Making directory {}".format(checkpoint))
         os.mkdir(checkpoint)
