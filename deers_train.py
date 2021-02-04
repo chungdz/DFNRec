@@ -49,7 +49,7 @@ def run(cfg, rank, device, finished, train_dataset_path, valid_dataset_file, new
     valid_data_loader = DataLoader(valid_dataset, batch_size=cfg.batch_size, shuffle=False)
 
     # # Build model.
-    model = DFN(cfg.mc)
+    model = DEERS(cfg.mc)
     model.to(device)
     # Build optimizer.
     steps_one_epoch = len(train_data_loader)
@@ -78,7 +78,7 @@ def run(cfg, rank, device, finished, train_dataset_path, valid_dataset_file, new
 
             while finished.value < cfg.gpus:
                 time.sleep(1)
-            gather_all(cfg.result_path, cfg.gpus, validate=True, save=False)
+            gather_all(cfg.result_path, cfg.gpus, validate=True, save=False, tmp_name='tmp_deers')
             finished.value = 0
 
 def average_gradients(model):
@@ -173,7 +173,7 @@ def validate(cfg, epoch, model, device, rank, valid_data_loader, fast_dev=False,
         tmp_dict['labels'] = truths
         tmp_dict['preds'] = preds
 
-        with open(cfg.result_path + 'tmp_{}.json'.format(rank), 'w', encoding='utf-8') as f:
+        with open(cfg.result_path + 'tmp_deers_{}.json'.format(rank), 'w', encoding='utf-8') as f:
             json.dump(tmp_dict, f)
         f.close()
 
