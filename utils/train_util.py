@@ -52,7 +52,7 @@ def save_checkpoint_by_epoch(state, epoch, checkpoint, name='model'):
         epoch: (int) epoch no
         checkpoint: (string) folder where parameters are to be saved
     """
-    filepath = os.path.join(checkpoint, '{}.ep{0}'.format(name, epoch))
+    filepath = os.path.join(checkpoint, '{}.ep{}'.format(name, epoch))
     if not os.path.exists(checkpoint):
         print("Checkpoint Directory does not exist! Making directory {}".format(checkpoint))
         os.mkdir(checkpoint)
