@@ -125,7 +125,7 @@ def main(cfg):
     pretrained_model = torch.load(saved_model_path, map_location='cpu')
     print(model.load_state_dict(pretrained_model, strict=False))
 
-    for point_num in range(file_num):
+    for point_num in range(1, file_num):
         print("processing data/raw/dev-{}.npy".format(point_num))
         valid_dataset = np.load("data/raw/dev-{}.npy".format(point_num))
 
