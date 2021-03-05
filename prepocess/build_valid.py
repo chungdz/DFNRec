@@ -69,7 +69,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     # Path options.
-    parser.add_argument("--fsamples", default="dev/behaviors.tsv", type=str,
+    parser.add_argument("--fsamples", default="dev/target_behaviors.tsv", type=str,
                         help="Path of the dev samples file.")
     parser.add_argument("--fout", default="raw", type=str,
                         help="Path of the output dir.")
