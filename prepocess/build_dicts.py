@@ -49,7 +49,7 @@ news_dict = {}
 word_dict = {'<pad>': 0}
 word_idx = 1
 news_idx = 1
-for n, title, topic in all_news[['newsid', "title", "subcate"]].values:
+for n, title, cate, subcate in all_news[['newsid', "title", "cate", "subcate"]].values:
     assert(n not in news_dict)
     news_dict[n] = {}
     news_dict[n]['idx'] = news_idx
@@ -58,6 +58,7 @@ for n, title, topic in all_news[['newsid', "title", "subcate"]].values:
     news_idx += 1
 
     tarr = removePunctuation(title).split()
+    tarr = [cate, subcate] + tarr
     wid_arr = []
     for t in tarr:
         if t not in word_dict:
