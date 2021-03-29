@@ -73,9 +73,11 @@ print("Loading behaviors info")
 behaviors_raw = json.load(open('adressa/his_behaviors.json'))
 
 user_dict = {}
+user_idx = 0
 for uid, uinfo in tqdm(behaviors_raw.items(), total=len(behaviors_raw), desc='history behavior'):
     
-    user_dict[uid] = {"pos": [], "neg": [], 'clicked': [], 'dislike': []}
+    user_dict[uid] = {"pos": [], "neg": [], 'clicked': [], 'dislike': [], 'idx': user_idx}
+    user_idx += 1
     
     for nid in uinfo['pos']:
         user_dict[uid]["pos"].append(news_dict[nid]['idx'])
