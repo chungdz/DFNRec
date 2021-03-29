@@ -2,11 +2,11 @@ import json
 import pickle
 
 class ModelConfig():
-    def __init__(self):
+    def __init__(self, root):
 
-        word_dict = json.load(open('data/word.json', 'r', encoding='utf-8'))
-        user_dict = pickle.load(open('data/user_n.pkl', 'rb'))
-        news_dict = pickle.load(open('data/news_n.pkl', 'rb'))
+        word_dict = json.load(open('{}/word.json'.format(root), 'r', encoding='utf-8'))
+        user_dict = pickle.load(open('{}/user_n.pkl'.format(root), 'rb'))
+        news_dict = pickle.load(open('{}/news_n.pkl'.format(root), 'rb'))
         
         self.word_num = len(word_dict)
         self.user_num = len(user_dict)

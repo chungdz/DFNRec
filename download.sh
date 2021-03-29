@@ -13,3 +13,10 @@ wget https://mind201910small.blob.core.windows.net/release/MINDlarge_dev.zip
 unzip MINDlarge_dev.zip
 head -37647 behaviors.tsv > behaviors.small.tsv
 rm MINDlarge_dev.zip
+
+cd ../../
+mkdir adressa
+cd adressa
+mkdir raw data
+cd data 
+wget http://reclab.idi.ntnu.no/dataset/three_month.tar.gz

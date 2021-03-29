@@ -109,10 +109,10 @@ def main(cfg):
     file_num = cfg.filenum
     cfg.result_path = './result/'
     print('load config')
-    model_cfg = ModelConfig()
+    model_cfg = ModelConfig(cfg.root)
     cfg.mc = model_cfg
     print('load news info')
-    news_title = np.load('data/news_info.npy')
+    news_title = np.load('{}/news_info.npy'.format(cfg.root))
 
     model = DFN(model_cfg)
 
@@ -126,8 +126,8 @@ def main(cfg):
     print(model.load_state_dict(pretrained_model, strict=False))
 
     for point_num in range(1, file_num):
-        print("processing data/raw/dev-{}.npy".format(point_num))
-        valid_dataset = np.load("data/raw/dev-{}.npy".format(point_num))
+        print("processing {}/raw/dev-{}.npy".format(cfg.root, point_num))
+        valid_dataset = np.load("{}/raw/dev-{}.npy".format(cfg.root, point_num))
 
         dataset_list = split_dataset(valid_dataset, cfg.gpus)
         
@@ -154,6 +154,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=128, help='input batch size')
     parser.add_argument('--gpus', type=int, default=2, help='gpu_num')
     parser.add_argument('--epoch', type=int, default=0, help='the number of epochs load checkpoint')
+    parser.add_argument("--root", default="data", type=str)
     opt = parser.parse_args()
     logging.warning(opt)
 

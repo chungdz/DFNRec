@@ -63,8 +63,8 @@ def main(args):
         df = pd.read_csv(f_train_beh, sep="\t", encoding="utf-8", names=["id", "uid", "time", "hist", "imp"])
     else:
         df = pd.read_csv(f_train_beh, sep="\t", encoding="utf-8", names=["id", "uid", "imp"])
-    news_info = pickle.load(open('data/news_n.pkl', 'rb'))
-    user_info = pickle.load(open('data/user_n.pkl', 'rb'))
+    news_info = pickle.load(open('{}/news_n.pkl'.format(args.root), 'rb'))
+    user_info = pickle.load(open('{}/user_n.pkl'.format(args.root), 'rb'))
 
     subdf_len = math.ceil(len(df) / args.processes)
     cut_indices = [x * subdf_len for x in range(1, args.processes)]
