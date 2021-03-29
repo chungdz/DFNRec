@@ -14,13 +14,15 @@ parser.add_argument("--D", default=5, type=int, help="Max length of the news nei
 parser.add_argument("--pos_hist_length", default=30, type=int)
 parser.add_argument("--neg_hist_length", default=30, type=int)
 parser.add_argument("--unclicked_hist_length", default=30, type=int)
+parser.add_argument("--root", default='data', type=str)
 
 args = parser.parse_args()
 D = args.D
+root = args.root
 
-with open('data/user.pkl', 'rb') as f:
+with open('{}/user.pkl'.format(root), 'rb') as f:
     user_dict = pickle.load(f)
-with open('data/news.pkl', 'rb') as f2:
+with open('{}/news.pkl'.format(root), 'rb') as f2:
     news_dict = pickle.load(f2)
 
 has_neighbor = 0
@@ -73,7 +75,7 @@ for uid, uinfo in tqdm(user_dict.items(), total=len(user_dict), desc='pad histor
         uinfo["unclicked"] = random.sample(uinfo["unclicked"], args.unclicked_hist_length)
 
 
-with open('data/news_n.pkl', 'wb') as f4:
+with open('{}/news_n.pkl'.format(root), 'wb') as f4:
     news_dict = pickle.dump(news_dict, f4)
-with open('data/user_n.pkl', 'wb') as f4:
+with open('{}/user_n.pkl'.format(root), 'wb') as f4:
     user_dict = pickle.dump(user_dict, f4)
