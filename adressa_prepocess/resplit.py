@@ -26,4 +26,4 @@ datanp = np.concatenate(data_list, axis=0)
 sub_len = math.ceil(len(datanp) / cfg.split)
 
 np.save("{}-{}.npy".format(cfg.fsamples, 0), datanp[:sub_len])
-np.save("{}-{}.npy".format(cfg.fsamples, 0), datanp[sub_len:])
+np.save("{}-{}.npy".format(cfg.fsamples, 1), datanp[sub_len:])
