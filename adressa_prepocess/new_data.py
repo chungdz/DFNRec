@@ -30,7 +30,7 @@ def collect(user_dict, news_dict, path):
             user_dict[uid] = []
         user_dict[uid].append((nid, event["activeTime"]))
 
-root = 'data'
+root = 'adressa/data'
 his_user_dict = {}
 news_dict = {}
 # his
