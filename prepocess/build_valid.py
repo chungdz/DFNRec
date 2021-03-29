@@ -22,16 +22,18 @@ def build_examples(rank, args, df, news_info, user_info, fout):
 
         imp_list = str(imp).split(' ')
 
-        eligible_flag = False
+        has_one = False
+        has_zero = False
         for impre in imp_list:
             arr = impre.split('-')
             curn = news_info[arr[0]]['idx']
             label = int(arr[1])
             if label == 1:
-                eligible_flag = True
-                break
+                has_one = True
+            else:
+                has_zero = True
         
-        if not eligible_flag:
+        if not (has_one and has_zero):
             continue
         
         for impre in imp_list:
