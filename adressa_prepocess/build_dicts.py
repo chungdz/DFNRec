@@ -26,7 +26,7 @@ parser.add_argument("--title_len", default=15, type=int,
 
 args = parser.parse_args()
 
-data_path = 'data'
+data_path = 'adressa'
 max_title_len = args.title_len
 
 print("Loading news info")
@@ -92,9 +92,10 @@ for uid, uinfo in tqdm(user_dict.items(), desc='build graph', total=len(user_dic
     for h in his_list:
         news_dict[h]['clicked'].add(uid)
 
-build_word_embeddings(word_dict, 'data/glove.840B.300d.txt', 'data/emb.npy')
-build_news_embeddings(news_dict, 'data/news_info.npy')
-pickle.dump(user_dict, open('data/user.pkl', 'wb'))
-pickle.dump(news_dict, open('data/news.pkl', 'wb'))
-json.dump(word_dict, open('data/word.json', 'w', encoding='utf-8'))
+build_word_embeddings(word_dict, 'data/glove.840B.300d.txt', 'adressa/emb.npy')
+build_news_embeddings(news_dict, 'adressa/news_info.npy')
+pickle.dump(user_dict, open('adressa/user.pkl', 'wb'))
+pickle.dump(news_dict, open('adressa/news.pkl', 'wb'))
+json.dump(word_dict, open('adressa/word.json', 'w', encoding='utf-8'))
+
 
