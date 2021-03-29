@@ -20,3 +20,5 @@ cd adressa
 mkdir raw data
 cd data 
 wget http://reclab.idi.ntnu.no/dataset/three_month.tar.gz
+tar -zxvf three_month.tar.gz
+

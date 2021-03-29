@@ -217,12 +217,12 @@ def main(cfg):
     print('load dev')
     dev_list = []
     for i in range(cfg.filenum):
-        dev_list.append(np.load("data/raw/dev-{}.npy".format(i)))
+        dev_list.append(np.load("{}/raw/dev-{}.npy".format(cfg.root, i)))
     validate_dataset = np.concatenate(dev_list, axis=0)
     print('load config')
-    model_cfg = ModelConfig()
+    model_cfg = ModelConfig(cfg.root)
     print('load news info')
-    news_title = np.load('data/news_info.npy')
+    news_title = np.load('{}/news_info.npy'.format(cfg.root))
 
     cfg.mc = model_cfg
     cfg.result_path = './result/'
@@ -235,7 +235,7 @@ def main(cfg):
     processes = []
     for rank in range(cfg.gpus):
         p = mp.Process(target=init_processes, args=(
-            cfg, rank, None, "data/raw/train-{}-new.npy".format(rank), valid_dataset_list[rank], news_title, finished, run, "nccl"))
+            cfg, rank, None, "{}/raw/train-{}-new.npy".format(cfg.root, rank), valid_dataset_list[rank], news_title, finished, run, "nccl"))
         p.start()
         processes.append(p)
 
@@ -253,6 +253,7 @@ if __name__ == '__main__':
     parser.add_argument('--lr', type=float, default=0.0005, help='learning rate')  # [0.001, 0.0005, 0.0001]
     parser.add_argument('--weight_decay', type=float, default=1e-6)
     parser.add_argument('--port', type=int, default=9338)
+    parser.add_argument("--root", default="data", type=str)
     opt = parser.parse_args()
     logging.warning(opt)
 
