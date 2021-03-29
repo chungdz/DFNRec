@@ -58,8 +58,11 @@ def build_examples(rank, args, df, news_info, user_info, fout):
     print(datanp.shape)
 
 def main(args):
-    f_train_beh = os.path.join("data", args.fsamples)
-    df = pd.read_csv(f_train_beh, sep="\t", encoding="utf-8", names=["id", "uid", "time", "hist", "imp"])
+    f_train_beh = os.path.join(args.root, args.fsamples)
+    if args.dataset == 'MIND':
+        df = pd.read_csv(f_train_beh, sep="\t", encoding="utf-8", names=["id", "uid", "time", "hist", "imp"])
+    else:
+        df = pd.read_csv(f_train_beh, sep="\t", encoding="utf-8", names=["id", "uid", "imp"])
     news_info = pickle.load(open('data/news_n.pkl', 'rb'))
     user_info = pickle.load(open('data/user_n.pkl', 'rb'))
 
@@ -69,7 +72,7 @@ def main(args):
 
     processes = []
     for i in range(args.processes):
-        output_path = os.path.join("data", args.fout,  "train-{}.npy".format(i))
+        output_path = os.path.join(args.root, args.fout,  "train-{}.npy".format(i))
         p = mp.Process(target=build_examples, args=(
             i, args, dfs[i], news_info, user_info, output_path))
         p.start()
@@ -84,13 +87,15 @@ if __name__ == "__main__":
     # Path options.
     parser.add_argument("--fsamples", default="train/target_behaviors.tsv", type=str,
                         help="Path of the training samples file.")
-    parser.add_argument("--fout", default="raw", type=str,
-                        help="Path of the output dir.")
+    parser.add_argument("--fout", default="raw", type=str, help="Path of the output dir.")
     parser.add_argument("--neg_count", default=4, type=int)
     parser.add_argument("--processes", default=40, type=int, help="Processes number")
     parser.add_argument("--pos_hist_length", default=30, type=int)
     parser.add_argument("--neg_hist_length", default=30, type=int)
     parser.add_argument("--unclicked_hist_length", default=30, type=int)
+
+    parser.add_argument("--root", default="data", type=str)
+    parser.add_argument("--dataset", default="MIND", type=str)
 
     args = parser.parse_args()
 
