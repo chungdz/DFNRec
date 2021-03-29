@@ -121,7 +121,7 @@ for nid, ninfo in tqdm(news_dict.items(), total=len(news_dict), desc='add news i
 
     ninfo['idx'] = news_idx
     news_idx += 1
-    news_simplified_dict[ninfo['idx']] = ninfo['title']
+    news_simplified_dict[str(ninfo['idx'])] = ninfo['title']
 
 # user history
 labeled_behaviors = {}
@@ -144,9 +144,9 @@ for uid, uinfo in tqdm(filter_user.items(), total=len(filter_user), desc='relabe
     for nid, read_seconds in uinfo['his']:
 
         if read_seconds >= personal_line:
-            labeled_behaviors[uidx]['pos'].append(news_dict[nid]['idx'])
+            labeled_behaviors[uidx]['pos'].append(str(news_dict[nid]['idx']))
         else:
-            labeled_behaviors[uidx]['neg'].append(news_dict[nid]['idx'])
+            labeled_behaviors[uidx]['neg'].append(str(news_dict[nid]['idx']))
 
 # train tsv
 impression_id = 1
