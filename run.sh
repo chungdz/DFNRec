@@ -20,7 +20,7 @@ python -m prepocess.build_valid --processes=10 --fsamples=dev_behaviors.tsv --ro
 python -m adressa_prepocess.resplit --filenum 10
 
 CUDA_VISIBLE_DEVICES=0,1,2,3 python training.py --gpus=4 --epoch=10 --filenum=1 --root=adressa
-CUDA_VISIBLE_DEVICES=0,1,2,3 python validate.py --gpus=4 --epoch=10 --filenum=10 --root=adressa
+CUDA_VISIBLE_DEVICES=0,1,2,3 python validate.py --gpus=4 --epoch=10 --filenum=2 --root=adressa
 
 CUDA_VISIBLE_DEVICES=4,5,6,7 python deers_train.py --gpus=4 --epoch=10 --filenum=1 --root=adressa --port=9440
-CUDA_VISIBLE_DEVICES=4,5,6,7 python deers_validate.py --gpus=4 --epoch=4 --filenum=10 --root=adressa
+CUDA_VISIBLE_DEVICES=4,5,6,7 python deers_validate.py --gpus=4 --epoch=4 --filenum=2 --root=adressa
