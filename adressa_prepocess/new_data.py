@@ -80,7 +80,7 @@ for uid, uinfo in his_user_dict.items():
         filter_user[uid]['train'] = []
         filter_user[uid]['valid'] = []
         filter_user[uid]['test'] = []
-        filter_user[uid]['uidx'] = uidx
+        filter_user[uid]['uidx'] = str(uidx)
         uidx += 1
 # filter train user
 train_num = 0
@@ -119,9 +119,9 @@ news_idx = 0
 news_simplified_dict = {}
 for nid, ninfo in tqdm(news_dict.items(), total=len(news_dict), desc='add news index'):
 
-    ninfo['idx'] = news_idx
+    ninfo['idx'] = str(news_idx)
     news_idx += 1
-    news_simplified_dict[str(ninfo['idx'])] = ninfo['title']
+    news_simplified_dict[ninfo['idx']] = ninfo['title']
 
 # user history
 labeled_behaviors = {}
@@ -144,9 +144,9 @@ for uid, uinfo in tqdm(filter_user.items(), total=len(filter_user), desc='relabe
     for nid, read_seconds in uinfo['his']:
 
         if read_seconds >= personal_line:
-            labeled_behaviors[uidx]['pos'].append(str(news_dict[nid]['idx']))
+            labeled_behaviors[uidx]['pos'].append(news_dict[nid]['idx'])
         else:
-            labeled_behaviors[uidx]['neg'].append(str(news_dict[nid]['idx']))
+            labeled_behaviors[uidx]['neg'].append(news_dict[nid]['idx'])
 
 # train tsv
 impression_id = 1
@@ -160,9 +160,9 @@ for uid, uinfo in tqdm(filter_user.items(), total=len(filter_user), desc='build 
     for nid, read_seconds in uinfo['train']:
 
         if read_seconds >= uinfo['line']:
-            impre.append(str(news_dict[nid]['idx']) + '-1')
+            impre.append(news_dict[nid]['idx'] + '-1')
         else:
-            impre.append(str(news_dict[nid]['idx']) + '-0')
+            impre.append(news_dict[nid]['idx'] + '-0')
     impre_str = ' '.join(impre)
 
     new_row = []
@@ -187,9 +187,9 @@ for uid, uinfo in tqdm(filter_user.items(), total=len(filter_user), desc='build 
     for nid, read_seconds in uinfo['valid']:
 
         if read_seconds >= uinfo['line']:
-            impre.append(str(news_dict[nid]['idx']) + '-1')
+            impre.append(news_dict[nid]['idx'] + '-1')
         else:
-            impre.append(str(news_dict[nid]['idx']) + '-0')
+            impre.append(news_dict[nid]['idx'] + '-0')
     impre_str = ' '.join(impre)
 
     new_row = []
@@ -208,9 +208,9 @@ for uid, uinfo in tqdm(filter_user.items(), total=len(filter_user), desc='build 
     for nid, read_seconds in uinfo['test']:
 
         if read_seconds >= uinfo['line']:
-            impre.append(str(news_dict[nid]['idx']) + '-1')
+            impre.append(news_dict[nid]['idx'] + '-1')
         else:
-            impre.append(str(news_dict[nid]['idx']) + '-0')
+            impre.append(news_dict[nid]['idx'] + '-0')
     impre_str = ' '.join(impre)
 
     new_row = []
