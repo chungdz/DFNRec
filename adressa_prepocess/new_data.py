@@ -80,7 +80,7 @@ for uid, uinfo in his_user_dict.items():
         filter_user[uid]['train'] = []
         filter_user[uid]['valid'] = []
         filter_user[uid]['test'] = []
-        filter_user[uid]['uidx'] = str(uidx)
+        filter_user[uid]['uidx'] = 'U' + str(uidx)
         uidx += 1
 # filter train user
 train_num = 0
@@ -119,7 +119,7 @@ news_idx = 0
 news_simplified_dict = {}
 for nid, ninfo in tqdm(news_dict.items(), total=len(news_dict), desc='add news index'):
 
-    ninfo['idx'] = str(news_idx)
+    ninfo['idx'] = 'N' + str(news_idx)
     news_idx += 1
     news_simplified_dict[ninfo['idx']] = ninfo['title']
 
