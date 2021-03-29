@@ -44,7 +44,7 @@ for nid, ninfo in news_dict_raw.items():
     news_dict[nid]['neighbor'] = []
     news_idx += 1
 
-    tarr = removePunctuation(ninfo['title']).split()
+    tarr = removePunctuation(ninfo).split()
     wid_arr = []
     for t in tarr:
         if t not in word_dict:
@@ -70,17 +70,17 @@ print('all news', len(news_dict))
 assert(len(news_dict) == news_idx)
 
 print("Loading behaviors info")
-behaviors_raw = json.load(open('adressa/labeled_behaviors.json'))
+behaviors_raw = json.load(open('adressa/his_behaviors.json'))
 
 user_dict = {}
 for uid, uinfo in tqdm(behaviors_raw.items(), total=len(behaviors_raw), desc='history behavior'):
     
     user_dict[uid] = {"pos": [], "neg": [], 'clicked': [], 'dislike': []}
     
-    for nid in uinfo['his']['pos']:
+    for nid in uinfo['pos']:
         user_dict[uid]["pos"].append(news_dict[nid]['idx'])
         user_dict[uid]["clicked"].append(nid)
-    for nid in uinfo['his']['neg']:
+    for nid in uinfo['neg']:
         user_dict[uid]['neg'].append(news_dict[nid]['idx'])
         user_dict[uid]["dislike"].append(nid)
 

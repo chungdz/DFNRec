@@ -4,6 +4,7 @@ import os
 import pickle
 from tqdm import tqdm, trange
 import numpy as np
+import pandas as pd
 
 def collect(user_dict, news_dict, path):
 
@@ -113,7 +114,16 @@ active_time = sorted(active_time)
 divide_line = np.percentile(active_time, 80)
 print('divide line', divide_line)
 
-# change label
+# add news idx
+news_idx = 0
+news_simplified_dict = {}
+for nid, ninfo in tqdm(news_dict.items(), total=len(news_dict), desc='add news index'):
+
+    ninfo['idx'] = news_idx
+    news_idx += 1
+    news_simplified_dict[ninfo['idx']] = ninfo['title']
+
+# user history
 labeled_behaviors = {}
 for uid, uinfo in tqdm(filter_user.items(), total=len(filter_user), desc='relabel'):
 
@@ -123,53 +133,98 @@ for uid, uinfo in tqdm(filter_user.items(), total=len(filter_user), desc='relabe
         personal_times.append(at)
     personal_times = sorted(personal_times)
     personal_line = np.percentile(personal_times, 80)
+    uinfo['line'] = personal_line
 
     uidx = uinfo['uidx']
     labeled_behaviors[uidx] = {}
-    labeled_behaviors[uidx]['his'] = {'pos': [], 'neg': [], 'cnt': 0}
-    labeled_behaviors[uidx]['train'] = {'pos': [], 'neg': [], 'cnt': 0}
-    labeled_behaviors[uidx]['valid'] = {'pos': [], 'neg': [], 'cnt': 0}
-    labeled_behaviors[uidx]['test'] = {'pos': [], 'neg': [], 'cnt': 0}
+    labeled_behaviors[uidx] = {'pos': [], 'neg': [], 'cnt': 0}
 
-    labeled_behaviors[uidx]['his']['cnt'] = len(uinfo['his'])
-    assert(labeled_behaviors[uidx]['his']['cnt'] > 0)
+    labeled_behaviors[uidx]['cnt'] = len(uinfo['his'])
+    assert(labeled_behaviors[uidx]['cnt'] > 0)
     for nid, read_seconds in uinfo['his']:
 
         if read_seconds >= personal_line:
-            labeled_behaviors[uidx]['his']['pos'].append(nid)
+            labeled_behaviors[uidx]['pos'].append(news_dict[nid]['idx'])
         else:
-            labeled_behaviors[uidx]['his']['neg'].append(nid)
+            labeled_behaviors[uidx]['neg'].append(news_dict[nid]['idx'])
+
+# train tsv
+impression_id = 1
+train_arr = []
+for uid, uinfo in tqdm(filter_user.items(), total=len(filter_user), desc='build train'):
+
+    if len(uinfo['train']) <= 0:
+        continue
     
-    labeled_behaviors[uidx]['train']['cnt'] = len(uinfo['train'])
-    if labeled_behaviors[uidx]['train']['cnt'] > 0:
+    impre = []
+    for nid, read_seconds in uinfo['train']:
 
-        for nid, read_seconds in uinfo['train']:
+        if read_seconds >= uinfo['line']:
+            impre.append(str(news_dict[nid]['idx']) + '-1')
+        else:
+            impre.append(str(news_dict[nid]['idx']) + '-0')
+    impre_str = ' '.join(impre)
 
-            if read_seconds >= personal_line:
-                labeled_behaviors[uidx]['train']['pos'].append(nid)
-            else:
-                labeled_behaviors[uidx]['train']['neg'].append(nid)
+    new_row = []
+    new_row.append(impression_id)
+    new_row.append(uinfo['uidx'])
+    new_row.append(impre_str)
+    train_arr.append(new_row)
+    impression_id += 1
+
+train_df = pd.DataFrame(train_arr)
+
+# valid tsv
+valid_impression_id = 1
+valid_arr = []
+
+for uid, uinfo in tqdm(filter_user.items(), total=len(filter_user), desc='build valid'):
+
+    if len(uinfo['valid']) <= 0:
+        continue
     
-    labeled_behaviors[uidx]['valid']['cnt'] = len(uinfo['valid'])
-    if labeled_behaviors[uidx]['valid']['cnt'] > 0:
+    impre = []
+    for nid, read_seconds in uinfo['valid']:
 
-        for nid, read_seconds in uinfo['valid']:
+        if read_seconds >= uinfo['line']:
+            impre.append(str(news_dict[nid]['idx']) + '-1')
+        else:
+            impre.append(str(news_dict[nid]['idx']) + '-0')
+    impre_str = ' '.join(impre)
 
-            if read_seconds >= personal_line:
-                labeled_behaviors[uidx]['valid']['pos'].append(nid)
-            else:
-                labeled_behaviors[uidx]['valid']['neg'].append(nid)
+    new_row = []
+    new_row.append(valid_impression_id)
+    new_row.append(uinfo['uidx'])
+    new_row.append(impre_str)
+    valid_arr.append(new_row)
+    valid_impression_id += 1
 
-    labeled_behaviors[uidx]['test']['cnt'] = len(uinfo['test'])
-    if labeled_behaviors[uidx]['test']['cnt'] > 0:
+for uid, uinfo in tqdm(filter_user.items(), total=len(filter_user), desc='build test'):
 
-        for nid, read_seconds in uinfo['test']:
+    if len(uinfo['test']) <= 0:
+        continue
+    
+    impre = []
+    for nid, read_seconds in uinfo['test']:
 
-            if read_seconds >= personal_line:
-                labeled_behaviors[uidx]['test']['pos'].append(nid)
-            else:
-                labeled_behaviors[uidx]['test']['neg'].append(nid)
+        if read_seconds >= uinfo['line']:
+            impre.append(str(news_dict[nid]['idx']) + '-1')
+        else:
+            impre.append(str(news_dict[nid]['idx']) + '-0')
+    impre_str = ' '.join(impre)
 
-pickle.dump(filter_user, open('adressa/user_behaviors.pkl', 'wb'))
-json.dump(news_dict, open('adressa/news_dict.json', 'w'))
-json.dump(labeled_behaviors, open('adressa/labeled_behaviors.json', 'w'))
+    new_row = []
+    new_row.append(valid_impression_id)
+    new_row.append(uinfo['uidx'])
+    new_row.append(impre_str)
+    valid_arr.append(new_row)
+    valid_impression_id += 1
+
+valid_df = pd.DataFrame(valid_arr)
+
+# pickle.dump(filter_user, open('adressa/user_behaviors.pkl', 'wb'))
+# json.dump(news_dict, open('adressa/news_dict.json', 'w'))
+json.dump(labeled_behaviors, open('adressa/his_behaviors.json', 'w'))
+train_df.to_csv('adressa/train_behaviors.tsv', index=None, header=None, sep='\t')
+valid_df.to_csv('adressa/dev_behaviors.tsv', index=None, header=None, sep='\t')
+json.dump(news_simplified_dict, open('adressa/news_dict.json', 'w'))
