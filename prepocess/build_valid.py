@@ -21,8 +21,19 @@ def build_examples(rank, args, df, news_info, user_info, fout):
         his_idx_list = user_info[uid]["pos"] + user_info[uid]["neg"] + user_info[uid]["unclicked"]
 
         imp_list = str(imp).split(' ')
-        imp_pos_list = []
-        imp_neg_list = []
+
+        eligible_flag = False
+        for impre in imp_list:
+            arr = impre.split('-')
+            curn = news_info[arr[0]]['idx']
+            label = int(arr[1])
+            if label == 1:
+                eligible_flag = True
+                break
+        
+        if not eligible_flag:
+            continue
+        
         for impre in imp_list:
             arr = impre.split('-')
             curn = news_info[arr[0]]['idx']
