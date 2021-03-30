@@ -16,7 +16,7 @@ from utils.eval_util import cal_metric
 
 
 
-def gather(output_path, start_file, filenum, validate=False, save=True, tmp_name='tmp'):
+def gather(output_path, filenum, start_file=0, validate=False, save=True, tmp_name='tmp'):
     preds = []
     labels = []
     imp_indexes = []
