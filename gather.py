@@ -16,12 +16,12 @@ from utils.eval_util import cal_metric
 
 
 
-def gather(output_path, filenum, validate=False, save=True, tmp_name='tmp'):
+def gather(output_path, start_file, filenum, validate=False, save=True, tmp_name='tmp'):
     preds = []
     labels = []
     imp_indexes = []
 
-    for i in range(filenum):
+    for i in range(start_file, filenum):
         with open(output_path + '{}_{}.json'.format(tmp_name, i), 'r', encoding='utf-8') as f:
             cur_result = json.load(f)
         imp_indexes += cur_result['imp']
