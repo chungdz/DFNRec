@@ -21,9 +21,8 @@ for i in range(cfg.filenum):
     data_list.append(np.load(file_name))
     os.remove(file_name)
 
+sub_len = data_list[0].shape[0]
 datanp = np.concatenate(data_list, axis=0)
-
-sub_len = math.ceil(len(datanp) / cfg.split)
 
 np.save("{}-{}.npy".format(cfg.fsamples, 0), datanp[:sub_len])
 np.save("{}-{}.npy".format(cfg.fsamples, 1), datanp[sub_len:])
