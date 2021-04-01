@@ -11,7 +11,7 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 python deers_train.py --gpus=4 --epoch=10 --filenum
 CUDA_VISIBLE_DEVICES=4,5,6,7 python deers_validate.py --gpus=4 --epoch=4 --filenum=10
 
 
-python -m adressa_prepocess.new_data
+python -m adressa_prepocess.new_data2
 python -m adressa_prepocess.build_dicts
 python -m prepocess.find_neighbors --root=adressa
 python -m prepocess.build_train --processes=10 --root=adressa --fsamples=train_behaviors.tsv --dataset=adressa
