@@ -72,7 +72,7 @@ def main(args):
 
     processes = []
     for i in range(args.processes):
-        output_path = os.path.join(args.root, args.fout,  "dev-{}.npy".format(i))
+        output_path = os.path.join(args.root, args.fout,  "{}-{}.npy".format(args.type, i))
         p = mp.Process(target=build_examples, args=(
             i, args, dfs[i], news_info, user_info, output_path))
         p.start()
@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--root", default="data", type=str)
     parser.add_argument("--dataset", default="MIND", type=str)
-
+    parser.add_argument("--type", default='dev', type=str)
     args = parser.parse_args()
 
     main(args)

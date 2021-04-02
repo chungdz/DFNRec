@@ -125,7 +125,7 @@ def main(cfg):
     pretrained_model = torch.load(saved_model_path, map_location='cpu')
     print(model.load_state_dict(pretrained_model, strict=False))
 
-    for point_num in range(1, file_num):
+    for point_num in range(cfg.start_dev, file_num):
         print("processing {}/raw/dev-{}.npy".format(cfg.root, point_num))
         valid_dataset = np.load("{}/raw/dev-{}.npy".format(cfg.root, point_num))
 
@@ -155,6 +155,7 @@ if __name__ == '__main__':
     parser.add_argument('--gpus', type=int, default=2, help='gpu_num')
     parser.add_argument('--epoch', type=int, default=0, help='the number of epochs load checkpoint')
     parser.add_argument("--root", default="data", type=str)
+    parser.add_argument("--start_dev", default=1, type=int)
     opt = parser.parse_args()
     logging.warning(opt)
 
