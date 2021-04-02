@@ -126,8 +126,8 @@ def main(cfg):
     print(model.load_state_dict(pretrained_model, strict=False))
 
     for point_num in range(cfg.start_dev, file_num):
-        print("processing {}/raw/dev-{}.npy".format(cfg.root, point_num))
-        valid_dataset = np.load("{}/raw/dev-{}.npy".format(cfg.root, point_num))
+        print("processing {}/raw/{}-{}.npy".format(cfg.root, cfg.type, point_num))
+        valid_dataset = np.load("{}/raw/{}-{}.npy".format(cfg.root, cfg.type, point_num))
 
         dataset_list = split_dataset(valid_dataset, cfg.gpus)
         
@@ -144,7 +144,7 @@ def main(cfg):
         
         gather(cfg, point_num)
     
-    gather_all(cfg.result_path, file_num, start_file=1, validate=True, save=True, tmp_name='tmp_deers')
+    gather_all(cfg.result_path, file_num, start_file=cfg.start_dev, validate=True, save=True, tmp_name='tmp_deers')
         
 
 if __name__ == '__main__':
@@ -156,6 +156,7 @@ if __name__ == '__main__':
     parser.add_argument('--epoch', type=int, default=0, help='the number of epochs load checkpoint')
     parser.add_argument("--root", default="data", type=str)
     parser.add_argument("--start_dev", default=1, type=int)
+    parser.add_argument("--type", default='test', type=str)
     opt = parser.parse_args()
     logging.warning(opt)
 
