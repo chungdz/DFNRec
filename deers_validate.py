@@ -156,7 +156,7 @@ if __name__ == '__main__':
     parser.add_argument('--epoch', type=int, default=0, help='the number of epochs load checkpoint')
     parser.add_argument("--root", default="data", type=str)
     parser.add_argument("--start_dev", default=1, type=int)
-    parser.add_argument("--type", default='test', type=str)
+    parser.add_argument("--type", default='dev', type=str)
     opt = parser.parse_args()
     logging.warning(opt)
 
