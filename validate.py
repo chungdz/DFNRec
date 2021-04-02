@@ -144,7 +144,7 @@ def main(cfg):
         
         gather(cfg, point_num)
     
-    gather_all(cfg.result_path, file_num, start_file=1, validate=True, save=True)
+    gather_all(cfg.result_path, file_num, start_file=cfg.start_dev, validate=True, save=True)
         
 
 if __name__ == '__main__':
