@@ -61,7 +61,7 @@ def run(cfg, rank, device, finished, train_dataset_path, valid_dataset_file, new
     if (cfg.gpus < 2) or (cfg.gpus > 1 and rank == 0):
         validate(cfg, -1, model, device, rank, valid_data_loader, fast_dev=True)
         logging.warning(model)
-        gather_all(cfg.result_path, 1, validate=True, save=False)
+        gather_all(cfg.result_path, 1, validate=True, save=False, tmp_name='tmp_deers')
     
     # Training and validation
     for epoch in range(cfg.epoch):
